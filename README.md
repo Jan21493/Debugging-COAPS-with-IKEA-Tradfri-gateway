@@ -63,7 +63,7 @@ You can get a recording, for example, via port mirroring on your own network swi
 
 ![Read Identity and Pre-shared-key from config-node in Node-RED](/images/Read&#32;Identity&#32;and&#32;Pre-shared-key&#32;from&#32;config-node&#32;in&#32;Node-RED.png width="100")
 
-<a href="Read Identity and Pre-shared-key from config-node in Node-RED"><img src="/images/Read&#32;Identity&#32;and&#32;Pre-shared-key&#32;from&#32;config-node&#32;in&#32;Node-RED.png" align="center" width="50%" ></a>
+<p align="center"><img src="/images/Read&#32;Identity&#32;and&#32;Pre-shared-key&#32;from&#32;config-node&#32;in&#32;Node-RED.png" alt="Read Identity and Pre-shared-key from config-node in Node-RED" width="75%" ></p>
   
 To do this, the pre-shared key that Node-RED uses, for example, must first be read out of the config-node. You can call up the embedded tradfri-config node via a tradfri-monitor node (click on the edit symbol) and read out the pre-shared key very easily.
 
