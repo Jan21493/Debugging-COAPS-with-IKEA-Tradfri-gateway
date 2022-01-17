@@ -79,3 +79,23 @@ The following is an example of the PUT command that Node-RED uses to set the val
 
 
 xxx
+
+The parameters and values are passed in JSON format. In the example below, the brightness is set to 25% and the light color to “ warm ”:
+
+xxx
+
+This message is acknowledged by the IKEA Tradfri Gateway as most messages. By using ACKs on the application layer the CoAP protocol compensates for the build-in reliability that is provided by TCP.
+
+I find it very interesting to read the CoAP communication, for example to check that events are being sent between Node-RED and the Tradfri Gateway and the values don't have to be polled at a regular short interval. It is not clear to me why Node-RED is constantly sending empty *CON* messages. Maybe it is used as a health-check. However, these messages are all acknowledged with an RST (reset) by the gateway.
+
+If you examine a complete "*session*" more closely, you can see that Node-RED initially queries the device list and all devices from it in order to be able to select the devices by user-friendly name - at least for the "control" nodes. In addition, all instanceIDs with an Observe: Register option are subscribed with the queries and therefore the CoAP client is able to get an event when values for these instance IDs have changed. A publisher-subscriber communication is used here, which avoids constant polling.
+
+xxx
+
+If you change the lamps via the IKEA remote control, for example, an event is sent to Node-RED, as can be seen in the example below:
+
+xxx
+
+Here's another idea that I haven't tested yet: If you can read the pre-shared key from the IKEA Smart Home app or initially record the coupling via the security code, then maybe you could also improve communication between the IKEA Smart Home app and read along with Tradfri Gateway.
+
+Have fun decoding the CoAP communication!
