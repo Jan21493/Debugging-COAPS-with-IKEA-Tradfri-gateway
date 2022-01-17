@@ -61,7 +61,7 @@ It gets really exciting when you want to sniff the communication between the cli
 
 You can get a recording, for example, via port mirroring on your own network switch or a Fritzbox and calling it up via the URL /html/capture.html. At first you only see encrypted packets, because the IKEA Tradfri Gateway only speaks COAPS. However, there is the option of storing the pre-shared key in Wireshark in order to be able to read the data traffic in plain text.
 
-![Read Identity and Pre-shared-key from config-node in Node-RED](/images/Read Identity and Pre-shared-key from config-node in Node-RED.png)
+![Read Identity and Pre-shared-key from config-node in Node-RED](/images/Read&#32;Identity&#32;and&#32;Pre-shared-key&#32;from&#32;config-node&#32;in&#32;Node-RED.png)
   
 To do this, the pre-shared key that Node-RED uses, for example, must first be read out of the config-node. You can call up the embedded tradfri-config node via a tradfri-monitor node (click on the edit symbol) and read out the pre-shared key very easily.
 
