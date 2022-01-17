@@ -61,17 +61,17 @@ It gets really exciting when you want to sniff the communication between the cli
 
 You can get a recording, for example, via port mirroring on your own network switch or a Fritzbox and calling it up via the URL /html/capture.html. At first you only see encrypted packets, because the IKEA Tradfri Gateway only speaks COAPS. However, there is the option of storing the pre-shared key in Wireshark in order to be able to read the data traffic in plain text.
 
-![Read Identity and Pre-shared-key from config-node in Node-RED](/images/Read&#32;Identity&#32;and&#32;Pre-shared-key&#32;from&#32;config-node&#32;in&#32;Node-RED.png width="100")
-
-<p align="center"><img src="/images/Read&#32;Identity&#32;and&#32;Pre-shared-key&#32;from&#32;config-node&#32;in&#32;Node-RED.png" alt="Read Identity and Pre-shared-key from config-node in Node-RED" width="75%" ></p>
-  
 To do this, the pre-shared key that Node-RED uses, for example, must first be read out of the config-node. You can call up the embedded tradfri-config node via a tradfri-monitor node (click on the edit symbol) and read out the pre-shared key very easily.
 
-xxx
+<p align="center"><img src="/images/Read&#32;Identity&#32;and&#32;Pre-shared-key&#32;from&#32;config-node&#32;in&#32;Node-RED.png" alt="Read Identity and Pre-shared-key from config-node in Node-RED" width="75%" ></p>
 
-**After** you have started a packet capture, you have to tell your client to start a new session, e.g. by triggering a restart of the flows in Node-RED. On the CLI a new session is automatically created each time you send a URL, so you don't have to care about this.
+The key still has to be converted from ASCII to HEX, which can be done using various tools. The key is then entered in hex format in Wireshark in the "Settings", "Protocols", "DTLS" menu:
 
-xxx
+<p align="center"><img src="/images/Wireshark&#32;-&#32;Preferences&#32;-&#32;protocols.png" alt="Wireshark, Preferences, Protocols" width="75%" ></p>
+
+**After** you have started a packet capture in Wireshark, you have to tell your client to start a new session, e.g. by triggering a restart of the flows in Node-RED. On the CLI a new session is automatically created each time you send a URL, so you don't have to care about this.
+
+<p align="center"><img src="/images/Node-RED&#32;-&#32;Restart&#32;Flows.png" alt="Node-RED - Restart Flows" width="75%" ></p>
 
 From this point on, the CoAP communication is displayed in plain text.
 
@@ -79,12 +79,11 @@ From this point on, the CoAP communication is displayed in plain text.
 
 The following is an example of the PUT command that Node-RED uses to set the values of a lamp with instanceID 65550 (Spot A1):
 
-
-xxx
+<p align="center"><img src="/images/Wireshark&#32;-&#32;COAP&#32;decrypted.png" alt="Wireshark - COAP decrypted" width="75%" ></p>
 
 The parameters and values are passed in JSON format. In the example below, the brightness is set to 25% and the light color to “ warm ”:
 
-xxx
+<p align="center"><img src="/images/CoAP&#32;decrypted.png" alt="CoAP decrypted in detail" width="75%" ></p>
 
 This message is acknowledged by the IKEA Tradfri Gateway as most messages. By using ACKs on the application layer the CoAP protocol compensates for the build-in reliability that is provided by TCP.
 
@@ -92,12 +91,12 @@ I find it very interesting to read the CoAP communication, for example to check 
 
 If you examine a complete "*session*" more closely, you can see that Node-RED initially queries the device list and all devices from it in order to be able to select the devices by user-friendly name - at least for the "control" nodes. In addition, all instanceIDs with an Observe: Register option are subscribed with the queries and therefore the CoAP client is able to get an event when values for these instance IDs have changed. A publisher-subscriber communication is used here, which avoids constant polling.
 
-xxx
+<p align="center"><img src="/images/CoAP&#32;Observe&#32;-&#32;Register.png" alt="CoAP Observe - Register" width="75%" ></p>
 
 If you change the lamps via the IKEA remote control, for example, an event is sent to Node-RED, as can be seen in the example below:
 
-xxx
+<p align="center"><img src="/images/Event&#32;from&#32;Tradfri&#32;Gateway&#32;to&#32;CoAP.png" alt="Event from Tradfri Gateway to CoAP" width="75%" ></p>
 
-Here's another idea that I haven't tested yet: If you can read the pre-shared key from the IKEA Smart Home app or initially record the coupling via the security code, then maybe you could also improve communication between the IKEA Smart Home app and read along with Tradfri Gateway.
+Here's another idea that I haven't tested yet: If you may be able to read the pre-shared key from the IKEA Smart Home app by capturing the initial coupling via the security code, then you may be able to get some more secrets out of the communication between the IKEA Smart Home app and the Tradfri Gateway.
 
 Have fun decoding the CoAP communication!
