@@ -71,11 +71,11 @@ To do this, the pre-shared key that Node-RED uses, for example, must first be re
 
 The key still has to be converted from ASCII to HEX, which can be done using various tools. The key is then entered in hex format in Wireshark in the "Settings", "Protocols", "DTLS" menu:
 
-<p align="center"><img src="/images/Wireshark&#32;-&#32;Preferences&#32;-&#32;protocols.png" alt="Wireshark, Preferences, Protocols" width="75%" ></p>
+<p align="center"><img src="/images/Wireshark&#32;-&#32;Preferences&#32;-&#32;Protocols.png" alt="Wireshark, Preferences, Protocols" width="75%" ></p>
 
 **After** you have started a packet capture in Wireshark, you have to tell your client to start a new session, e.g. by triggering a restart of the flows in Node-RED. On the CLI a new session is automatically created each time you send a URL, so you don't have to care about this.
 
-<p align="center"><img src="/images/Node-RED&#32;-&#32;Restart&#32;Flows.png" alt="Node-RED - Restart Flows" width="40%" ></p>
+<p align="center"><img src="/images/Node-RED&#32;-&#32;Restart&#32;Flows.png" alt="Node-RED - Restart Flows" width="30%" ></p>
 
 From this point on, the CoAP communication is displayed in plain text.
 
@@ -85,7 +85,7 @@ The following is an example of the PUT command that Node-RED uses to set the val
 
 <p align="center"><img src="/images/Wireshark&#32;-&#32;COAP&#32;decrypted.png" alt="Wireshark - COAP decrypted" width="100%" ></p>
 
-The parameters and values are passed in JSON format. In the example below, the brightness is set to 25% and the light color to “ warm ”:
+The parameters and values are passed in JSON format. In the example below, the brightness is set to 25% and the light color to "warm":
 
 <p align="center"><img src="/images/CoAP&#32;decrypted.png" alt="CoAP decrypted in detail" width="50%" ></p>
 
