@@ -49,7 +49,7 @@ The output should look like:
   ]
 }
 ````
-As a comment, I have added the above properties manually! These are partly from the instructions linked above and partly from (https://github.com/AlCalzone/node-tradfri-client/blob/master/src/lib/light.ts), a low-level library from AlCalzone that is included in e.g. *node-red-contrib-tradfri*. Devices other than light bulbs are also included. IKEA has not officially published the details, but almost all parameters are known today. These are probably based on the definition of the Open Mobile Alliance (OMA), see (https://devtoolkit.openmobilealliance.org/OEditor/default.aspx9) for details.
+I have added the comments for the properties show above manually! The tool does not provide this (yet). The properties are coded as simple numbers to keep it simple on the IoT devices. The descriptions for the property values are partly from the instructions linked above and partly from (https://github.com/AlCalzone/node-tradfri-client/blob/master/src/lib/light.ts), a low-level library from AlCalzone that is included in e.g. *node-red-contrib-tradfri*. Devices other than light bulbs are also included. IKEA has not officially published the details, but almost all parameters are known today. These are probably based on the definition of the Open Mobile Alliance (OMA), see (https://devtoolkit.openmobilealliance.org/OEditor/default.aspx9) for details.
 
 In addition to a list of end devices, a list of groups, scenes/moods, notifications and smart tasks can be output via different URIs. You can then use the respective instanceIDs to get details about an individual element in a list. Everything is more detailed in the linked instructions, so I'll save the details here.
 
