@@ -73,13 +73,13 @@ The key still has to be converted from ASCII to HEX, which can be done using var
 
 <p align="center"><img src="/images/Wireshark&#32;-&#32;Preferences&#32;-&#32;Protocols.png" alt="Wireshark, Preferences, Protocols" width="75%" ></p>
 
-**After** you have started a packet capture in Wireshark, you have to tell your client to start a new session, e.g. by triggering a restart of the flows in Node-RED. On the CLI a new session is automatically created each time you send a URL, so you don't have to care about this.
+**After** you have started a packet capture in Wireshark, you have to tell your client to start a new session, e.g. by triggering a restart of the flows in Node-RED or restarting the IKEA Smart Home app. On the CLI a new session is automatically created each time you send a URL, so you don't have to care about this.
 
 <p align="center"><img src="/images/Node-RED&#32;-&#32;Restart&#32;Flows.png" alt="Node-RED - Restart Flows" width="30%" ></p>
 
 From this point on, the CoAP communication is displayed in plain text.
 
-**NOTE**: after each new capture you have to restart the flows, since a dynamic key is generated for each "*session*" via the pre-shared key and identity name, which Wireshark unfortunately does not remember when you start a new capture. But you can certainly live with that.
+**NOTE**: after each new capture you have to restart the flows in Node-RED or restart the IKEA Smart Home app, since a dynamic key is generated for each "*session*" from the pre-shared key and identity name, which Wireshark unfortunately does not remember when you start a new capture. But you can certainly live with that. It might be easiest to keep capturing while looking into the packets.
 
 The following is an example of the PUT command that Node-RED uses to set the values of a lamp with instanceID 65550 (Spot A1):
 
