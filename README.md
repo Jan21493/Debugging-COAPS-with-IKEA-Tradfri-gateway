@@ -1,5 +1,5 @@
 # Debugging COAPS with IKEA Tradfri gateway
-These notes are an add-on to the excellent introduction [Ikea Tradfri CoAP Docs](https://github.com/glenndehaan/ikea-tradfri-coap-docs). With the linked, very well-described instructions and the coap-client tool, you can easily take the first steps yourself and query your own devices.
+These notes are an add-on to the excellent introduction [Ikea Tradfri CoAP Docs](https://github.com/glenndehaan/ikea-tradfri-coap-docs). With the very well-described instructions and the *coap-client* tool, you can easily take the first steps by yourself and query your own devices or set values.
 
 The Constrained Application Protocol (CoAP) was developed for the Internet of Things (IoT) and submitted to the Internet Engineering Task Force (IETF) in 2016. It is specially designed for the scarce memory and CPU resources of IoT devices and adopts the basics of REST, but also HTTP. Here is a link to the protocol definition: [Constrained Application Protocol (CoAP)](https://tools.ietf.org/id/draft-ietf-core-coap-09.html#rfc.section.3). Also of interest is the following link, which contains notes on integration into programming languages and tools (https://coap.technology/).
 
@@ -7,7 +7,7 @@ The protocol runs over UDP and is therefore connectionless. For IoT devices, thi
 
 The encrypted communication is not negotiated via certificates as with SSL, but initially via a security code that is printed on the underside of the gateway. With this securtiy code, a CoAP client can, for example, request a pre-shared-key for a desired username when setting up the communication. This username / pres-shared-key are not used to encrypt each packet, but are used when a "session" ist established. A "session" is comparable to a TLS session where each side is sending a "hello" and dynamic keys are negotiated between both parties.
 
-**TIP**: If you work in parallel with Node-RED and the node-red-contrib-ikea-tradfri library, you should adopt the user name and pre-shared key from Node-RED. At least I had problems when several clients with different keys accessed the gateway at the same time.
+**TIP**: If you work in parallel with Node-RED and the *node-red-contrib-ikea-tradfri* library, you should adopt the user name and pre-shared key from Node-RED. At least I had problems when several clients with different keys accessed the gateway at the same time.
 
 With a pipe to the tools *sed* and then to  *jq*, the JSON data can be output in a more readable manner. This is shown below for one of my IKEA GU10 spots:
 
@@ -69,7 +69,7 @@ To do this, the pre-shared key that Node-RED uses, for example, must first be re
 
 <p align="center"><img src="/images/Read&#32;Identity&#32;and&#32;Pre-shared-key&#32;from&#32;config-node&#32;in&#32;Node-RED.png" alt="Read Identity and Pre-shared-key from config-node in Node-RED" width="50%" ></p>
 
-The key still has to be converted from ASCII to HEX, which can be done using various tools. The key is then entered in hex format in Wireshark in the "Settings", "Protocols", "DTLS" menu:
+The key still has to be converted from ASCII to HEX, which can be done using various tools. The key is then entered in hex format in Wireshark in the "*Settings*", "*Protocols*", "*DTLS*" menu:
 
 <p align="center"><img src="/images/Wireshark&#32;-&#32;Preferences&#32;-&#32;Protocols.png" alt="Wireshark, Preferences, Protocols" width="75%" ></p>
 
