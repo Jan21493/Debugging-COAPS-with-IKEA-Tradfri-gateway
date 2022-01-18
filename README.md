@@ -126,7 +126,7 @@ The response from the CoAP server is explained in more detail below:
 
 The response in JSON format contains the property "*9091*" and the pre-shared key randomly chosen by the server. You can easily copy this key to the clipboard and save it using the menu items "*Copy*", "*...as Printable Text*". After converting this pre-shared key back from ASCII to hex and entering it into Wireshark, you can finally read the communication between the app and the gateway.
 
-## Security by COAPS
-Even if this guide shows how to read the encrypted communication, for example to understand the communication for new devices or new features, the CoAPS protocol is very secure in my opinion. Decryption is only possible if you can read the initial coupling between the app and the gateway, which takes place via the security code. Since communication at IKEA only takes place in the local LAN and (hopefully encrypted) WLAN at home, security is not compromised in practice.
+## Security of COAPS
+Even if this guide shows how to read the encrypted communication, for example to better understand the communication for new features, existing or new devices, the CoAPS protocol is very secure in my opinion. Decryption is only possible if you can read the initial coupling between the app and the gateway, which takes place via the security code. Since communication at IKEA only takes place in the local LAN and (hopefully encrypted) WLAN at home, security is not compromised in practice.
 
 Have fun decoding the CoAP communication!
