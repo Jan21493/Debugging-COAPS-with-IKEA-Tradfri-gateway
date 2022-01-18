@@ -1,6 +1,7 @@
 # Debugging COAPS with IKEA Tradfri gateway
-These notes are an add-on to the excellent introduction [Ikea Tradfri CoAP Docs](https://github.com/glenndehaan/ikea-tradfri-coap-docs). With the very well-described instructions and the *coap-client* tool, you can easily take the first steps by yourself and query your own devices or set values.
+These notes are an add-on to the excellent guide / introduction to this topic [Ikea Tradfri CoAP Docs](https://github.com/glenndehaan/ikea-tradfri-coap-docs). With the very well-described guide and the *coap-client* tool, you can easily take the first steps by yourself and query your own devices or set values.
 
+## Constrained Application Protocol
 The Constrained Application Protocol (CoAP) was developed for the Internet of Things (IoT) and submitted to the Internet Engineering Task Force (IETF) in 2016. It is specially designed for the scarce memory and CPU resources of IoT devices and adopts the basics of REST, but also HTTP. Here is a link to the protocol definition: [Constrained Application Protocol (CoAP)](https://tools.ietf.org/id/draft-ietf-core-coap-09.html#rfc.section.3). Also of interest is the following link, which contains notes on integration into programming languages and tools (https://coap.technology/).
 
 The protocol runs over UDP and is therefore connectionless. For IoT devices, this has the advantage that complex TCP communication with acknowledgments and buffers can be omitted. The IKEA Gateway only uses the encrypted variant COAPS, which uses DTLS as transport.
@@ -9,6 +10,7 @@ The encrypted communication is not negotiated via certificates as with SSL, but 
 
 **TIP**: If you work in parallel with Node-RED and the *node-red-contrib-ikea-tradfri* library, you should adopt the user name and pre-shared key from Node-RED. At least I had problems when several clients with different keys accessed the gateway at the same time.
 
+## Enhancements
 With a pipe to the tools *sed* and then to  *jq*, the JSON data can be output in a more readable manner. This is shown below for one of my IKEA GU10 spots:
 
 ````
@@ -49,10 +51,11 @@ The output should look like:
   ]
 }
 ````
-I have added the comments for the properties show above manually! The tool does not provide this (yet). The properties are coded as simple numbers to keep it simple on the IoT devices. The descriptions for the property values are partly from the instructions linked above and partly from (https://github.com/AlCalzone/node-tradfri-client/blob/master/src/lib/light.ts), a low-level library from AlCalzone that is included in e.g. *node-red-contrib-tradfri*. Devices other than light bulbs are also included. IKEA has not officially published the details, but almost all parameters are known today. These are probably based on the definition of the Open Mobile Alliance (OMA), see (https://devtoolkit.openmobilealliance.org/OEditor/default.aspx9) for details.
+I have added the comments for the properties show above manually! The tool does not provide this (yet). The properties are coded as simple numbers to keep it simple on the IoT devices. The descriptions for the property values are partly from the guide linked above and partly from (https://github.com/AlCalzone/node-tradfri-client/blob/master/src/lib/light.ts), a low-level library from AlCalzone that is included in e.g. *node-red-contrib-tradfri*. Devices other than light bulbs are also included. IKEA has not officially published the details, but almost all parameters are known today. These are probably based on the definition of the Open Mobile Alliance (OMA), see (https://devtoolkit.openmobilealliance.org/OEditor/default.aspx9) for details.
 
-In addition to a list of end devices, a list of groups, scenes/moods, notifications and smart tasks can be output via different URIs. You can then use the respective instanceIDs to get details about an individual element in a list. Everything is more detailed in the linked instructions, so I'll save the details here.
+In addition to a list of end devices, a list of groups, scenes/moods, notifications and smart tasks can be output via different URIs. You can then use the respective instanceIDs to get details about an individual element in a list. Everything is more detailed in the linked guide, so I'll save the details here.
 
+## Sniffing CoAP(S) Protocol
 It gets really exciting when you want to sniff the communication between the client, e.g. Node-RED, and the IKEA Tradfri gateway via Wireshark. You can get a packet capture, for example, via port mirroring on your own network switch or a Fritzbox (popular in Germany as an Internet router) and calling it up via the URL /html/capture.html. At first you only see encrypted packets, because the IKEA Tradfri Gateway only speaks COAPS (S=secure). However, there is the option of storing the pre-shared key in Wireshark in order to be able to read the data traffic in plain text.
 
 To do this, the pre-shared key that e.g. Node-RED uses, for example, must first be read out of the config-node. If you are using the coap-client on the CLI, you have that pre-shared key already. With Node-RED You can call up the embedded tradfri-config node via a tradfri-monitor node (click on the edit symbol) and read out the pre-shared key very easily.
@@ -101,6 +104,29 @@ If you change the lamps via the IKEA remote control, for example, an event is se
 
 <p align="center"><img src="/images/Event&#32;from&#32;Tradfri&#32;Gateway&#32;to&#32;CoAP.png" alt="Event from Tradfri Gateway to CoAP" width="100%" ></p>
 
-Here's another idea that I haven't tested yet: If you may be able to read the pre-shared key from the IKEA Smart Home app by capturing the initial coupling via the security code, then you may be able to get some more secrets out of the communication between the IKEA Smart Home app and the Tradfri Gateway.
+## Sniffing IKEA smart home app
+
+Since the IKEA Smart Home app is the primary reference for communication with the Tradfri Gateway, it would of course be great if you could also read this communication.
+
+My first ideas: *If you can read the pre-shared key from the IKEA Smart Home App or initially capture the coupling via the security code, then maybe you could also read the communication between the IKEA Smart Home App and the Tradfri Gateway?*
+
+I didn't take a closer look at the first option, but tried the second option right away. So I deleted the IKEA Smart Home app from my mobile phone and reinstalled it. This will delete locally stored information such as pre-shared keys. Then I reconnected to the gateway via the app and was prompted -  as expected - to scan the QR code or alternatively to enter the security code manually. After entering this information, I was able to see my installed lamps in the app again.
+
+Then I examined the packet capture with Wireshark. Initially I only saw DTLS communication and Hello packets from both sides. Upon closer examination, I found that encrypted communication is negotiated, similar to what happens with TLS, but with fewer ciphers. The authentication phase, in which the client requests a pre-shared key from the server, has already been described [here](https://github.com/glenndehaan/ikea-tradfri-coap-docs#authenticate) in the guide mentioned. This was already encrypted, so that nothing could be read in plain text.
+
+I didn't even have to search the COAPS RFC, but saw that the security code '*coincidentally*' had the same length as the pre-shared keys and assumed that this key might have been used for the initial encryption. So I saved the packet capture, converted the security code from ASCII to hex and entered it in Wireshark. **Bingo!** Now I was able to read the authentication in clear text:
+
+<p align="center"><img src="/images/COAPS&#32;request&#32;from&#32;client&#32;to&#32;authenticate.png" alt="COAPS request from client to authenticate" width="100%" ></p>
+
+At the beginning you can see several "*Client Hello*" and "*Server Hello*" packets and the negotiation of the symmetric encryption. This is followed by authentication, with which the CoAP client requests a pre-shared key for a desired user name. To do this, the client sends the property "*9090*" and the desired (dynamically selected) username in JSON format to the CoAP server.
+
+The response from the CoAP server is explained in more detail below:
+
+<p align="center"><img src="/images/COAPS&#32;server&#32;response&#32;with&#32;pre-shared&#32;key.png" alt="COAPS server response with pre-shared key" width="100%" ></p>
+
+The response in JSON format contains the property "*9091*" and the pre-shared key randomly chosen by the server. You can easily copy this key to the clipboard and save it using the menu items "*Copy*", "*...as Printable Text*". After converting this pre-shared key back from ASCII to hex and entering it into Wireshark, you can finally read the communication between the app and the gateway.
+
+## Security by COAPS
+Even if this guide shows how to read the encrypted communication, for example to understand the communication for new devices or new features, the CoAPS protocol is very secure in my opinion. Decryption is only possible if you can read the initial coupling between the app and the gateway, which takes place via the security code. Since communication at IKEA only takes place in the local LAN and (hopefully encrypted) WLAN at home, security is not compromised in practice.
 
 Have fun decoding the CoAP communication!
