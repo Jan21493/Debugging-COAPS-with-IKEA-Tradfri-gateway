@@ -118,15 +118,15 @@ I didn't even have to search the COAPS RFC, but saw that the security code '*coi
 
 <p align="center"><img src="/images/COAPS&#32;request&#32;from&#32;client&#32;to&#32;authenticate.png" alt="COAPS request from client to authenticate" width="100%" ></p>
 
-At the beginning you can see several "*Client Hello*" and "*Server Hello*" packets and the negotiation of the symmetric encryption. This is followed by authentication, with which the CoAP client requests a pre-shared key for a desired user name. To do this, the client sends the property "*9090*" and the desired (dynamically selected) username in JSON format to the CoAP server.
+At the beginning you can see several "*Client Hello*" and "*Server Hello*" packets and the negotiation of the ciphers for symmetric encryption. This is followed by authentication, during which the CoAP client requests a pre-shared key for a given user name. To do this, the client sends the property "*9090*" and the given (typically dynamically selected) username in JSON format to the CoAP server.
 
 The response from the CoAP server is explained in more detail below:
 
 <p align="center"><img src="/images/COAPS&#32;server&#32;response&#32;with&#32;pre-shared&#32;key.png" alt="COAPS server response with pre-shared key" width="100%" ></p>
 
-The response in JSON format contains the property "*9091*" and the pre-shared key randomly chosen by the server. You can easily copy this key to the clipboard and save it using the menu items "*Copy*", "*...as Printable Text*". After converting this pre-shared key back from ASCII to hex and entering it into Wireshark, you can finally read the communication between the app and the gateway.
+The response in JSON format contains the property "*9091*" and the pre-shared key that is randomly chosen by the server. You can easily copy this key to the clipboard and save it using the menu items "*Copy*", "*...as Printable Text*". After converting this pre-shared key back from ASCII to hex and entering it into Wireshark, you can finally read the communication between the app and the gateway.
 
 ## Security of COAPS
-Even if this guide shows how to read the encrypted communication, for example to better understand the communication for new features, existing or new devices, the CoAPS protocol is very secure in my opinion. Decryption is only possible if you can read the initial coupling between the app and the gateway, which takes place via the security code. Since communication at IKEA only takes place in the local LAN and (hopefully encrypted) WLAN at home, security is not compromised in practice.
+Even if this guide shows how to read the encrypted communication, for example to better understand the communication for new features, existing or new devices, the CoAPS protocol is very secure in my opinion. Decryption is only possible if you can read the initial coupling between the app and the gateway, which takes place via the security code. Since communication between the IKEA Tradfri gateway and the Smart Home app only takes place in the local LAN and (hopefully encrypted) WLAN at home, security is not compromised in practice. I really like that approach without using cloud!
 
 Have fun decoding the CoAP communication!
